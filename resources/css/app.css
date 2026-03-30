@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* 1. CONFIGURAZIONE TEMA (Solo Variabili) */
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --color-scirocco-amber: #b45309;
+}
+
+/* 2. COMPONENTI E UTILITY PERSONALIZZATE */
+@layer utilities {
+    /* Video a tutto schermo con posizionamento centrato */
+    .video-background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+        z-index: 0;
+    }
+}
+
+/* 3. STILI GLOBALI (Standard CSS) */
+html {
+    scroll-behavior: smooth;
+}
+
+[x-cloak] { 
+    display: none !important; 
+}
