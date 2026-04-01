@@ -6,9 +6,11 @@ use Filament\Pages\Dashboard as BaseDashboard;
 
 class Dashboard extends BaseDashboard
 {
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = null;
+    protected static ?string $navigationGroup = 'MENU';
 
     /**
      * Widget visibili in Dashboard:

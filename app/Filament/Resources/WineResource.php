@@ -22,7 +22,8 @@ class WineResource extends Resource
 
     protected static ?string $navigationLabel = 'Carta dei vini';
     protected static ?int $navigationSort = 2;
-    protected static ?string $navigationGroup = 'ATTIVITA\'';
+    protected static ?string $navigationGroup = 'Ristorante';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static bool $shouldRegisterNavigation = true;
 
     protected static ?string $slug = 'wines';

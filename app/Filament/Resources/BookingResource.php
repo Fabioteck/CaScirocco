@@ -20,7 +20,7 @@ class BookingResource extends Resource
     protected static ?string $navigationLabel = 'Prenotazione stanze';
     protected static ?int $navigationSort = 4;
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-    protected static ?string $navigationGroup = null;
+    protected static ?string $navigationGroup = 'MENU';
 
   public static function form(Form $form): Form
 {

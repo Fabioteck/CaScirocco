@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\Admin\WineController;
 use App\Http\Controllers\Admin\DailyDishController;
+use App\Http\Controllers\HomeController;
 use App\Livewire\CartaVini;
 use App\Livewire\MenuStagionale; 
 
@@ -31,13 +32,7 @@ Route::get('/stanza/{id}', function ($id) {
 
 Route::post('/prenotazione/verifica', [BookingController::class, 'checkAvailability'])->name('bookings.check');
 
-Route::get('/', function () {
-    $rooms = \App\Models\Room::all();
-    // Recuperiamo i settaggi di chiusura
-    $settings = \App\Models\Setting::all()->pluck('value', 'key');
-    
-    return view('welcome', compact('rooms', 'settings'));
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/test-auth', function () {
     if (Auth::check()) {

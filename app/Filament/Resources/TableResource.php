@@ -17,8 +17,8 @@ class TableResource extends Resource
     protected static ?string $model = TableModel::class;
     protected static ?string $navigationLabel = 'Gestione tavoli';
     protected static ?int $navigationSort = 5;
-    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
-    protected static ?string $navigationGroup = 'ATTIVITA\'';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+    protected static ?string $navigationGroup = 'Ristorante';
     
     protected static bool $shouldRegisterNavigation = true;
 

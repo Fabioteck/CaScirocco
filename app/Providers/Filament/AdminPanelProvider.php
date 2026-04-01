@@ -54,34 +54,34 @@ class AdminPanelProvider extends PanelProvider
             )
 
             ->navigationGroups([
-                NavigationGroup::make('ATTIVITA\''),
-                NavigationGroup::make('GESTIONE SITO'),
-                NavigationGroup::make('Marketing'),
+                NavigationGroup::make('Amministrazione'),
+                NavigationGroup::make('Ristorante'),
+                NavigationGroup::make('Sito'),
             ])
 
             ->navigationItems([
                 NavigationItem::make('Facebook')
                     ->url('https://www.facebook.com', true)
                     ->icon('heroicon-o-share')
-                    ->group('Marketing')
+                    ->group('Sito')
                     ->sort(1),
 
                 NavigationItem::make('Instagram')
                     ->url('https://www.instagram.com', true)
                     ->icon('heroicon-o-camera')
-                    ->group('Marketing')
+                    ->group('Sito')
                     ->sort(2),
 
                 NavigationItem::make('TripAdvisor')
                     ->url('https://www.tripadvisor.it', true)
                     ->icon('heroicon-o-chat-bubble-left-right')
-                    ->group('Marketing')
+                    ->group('Sito')
                     ->sort(3),
 
                 NavigationItem::make('Booking')
                     ->url('https://www.booking.com', true)
                     ->icon('heroicon-o-building-office-2')
-                    ->group('Marketing')
+                    ->group('Sito')
                     ->sort(4),
             ])
 

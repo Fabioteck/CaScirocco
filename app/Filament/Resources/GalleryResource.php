@@ -22,8 +22,8 @@ class GalleryResource extends Resource
 
     protected static ?string $navigationLabel = 'Gallerie';
     protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'GESTIONE SITO';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Sito';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
 public static function form(Form $form): Form
 {
@@ -39,19 +39,25 @@ public static function form(Form $form): Form
             // Il cuore dell'upload
             FileUpload::make('image_path')
                 ->label('Carica Immagine')
-                ->image() // Accetta solo immagini
-                ->multiple() // Carica tutto il set del "Museo" in un colpo solo
-                ->reorderable() // Trascina le foto per decidere l'ordine
-                ->directory('gallery-cascirocco') // Cartella in storage/app/public/
+                ->image()
+                ->disk('public')
+                ->directory('galleries')
+                ->visibility('public')
                 ->imageResizeTargetWidth('1200') // Fondamentale per le performance del Pi 4
                 ->imageResizeTargetHeight('800')
                 ->loadingIndicatorPosition('left')
-                ->panelLayout('integrated') // Visualizzazione compatta
+                ->panelLayout('integrated')
                 ->required(),
 
             TextInput::make('title')
                 ->label('Titolo (opzionale)')
                 ->maxLength(255),
+
+            TextInput::make('sort_order')
+                ->label('Ordine')
+                ->numeric()
+                ->default(0)
+                ->required(),
         ]);
 }
 
@@ -59,7 +65,18 @@ public static function form(Form $form): Form
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->disk('public')
+                    ->label('Foto')
+                    ->square(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Titolo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Categoria'),
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Ordine')
+                    ->sortable(),
             ])
             ->filters([
                 //

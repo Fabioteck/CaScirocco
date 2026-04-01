@@ -27,6 +27,13 @@
     <style>
         /* Supporto per Alpine (già incluso in Livewire 3/Filament) */
         [x-cloak] { display: none !important; }
+        :root { --nav-h: 72px; }
+        .section-shell { padding-block: clamp(2.25rem, 5vw, 4rem); }
+        @media (min-width: 1024px) {
+            .section-shell { padding-block: clamp(2.75rem, 4vw, 4.25rem); }
+        }
+        /* Ancora/scroll più preciso con navbar fissa */
+        section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
     </style>
 
 @livewireStyles
@@ -96,6 +103,19 @@
     </div>
 </nav>
 
+<script>
+  (function () {
+    const setNavHeight = () => {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      const h = Math.round(nav.getBoundingClientRect().height || 72);
+      document.documentElement.style.setProperty('--nav-h', h + 'px');
+    };
+    window.addEventListener('load', setNavHeight, { passive: true });
+    window.addEventListener('resize', setNavHeight, { passive: true });
+  })();
+</script>
+
 <!-- HEADER CON FRECCIA BIANCA -->
 <header class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-stone-900">
     <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-60 z-0">
@@ -129,7 +149,7 @@
 
 
 <!-- SEZIONE RISTORANTE -->
-<section id="ristorante" class="py-10 bg-white"> <!-- Ridotto il padding verticale da 20/24 a 10 -->
+<section id="ristorante" class="section-shell bg-white">
     <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-10">
             <span class="text-amber-700 uppercase tracking-[0.4em] text-[10px] font-bold block mb-4">Esperienza Culinaria</span>
@@ -184,7 +204,7 @@
 </section>
 
 <!-- PRENOTA TAVOLO -->
-<section id="prenota-tavolo" class="py-20 bg-stone-50">
+<section id="prenota-tavolo" class="section-shell bg-stone-50">
     <div class="max-w-4xl mx-auto px-4">
         <div class="bg-stone-50 p-8 md:p-16 border border-stone-100 shadow-sm relative overflow-hidden">
             {{-- Elemento decorativo --}}
@@ -206,7 +226,7 @@
 </section>
 
 <!-- SEZIONE ALLOGGI -->
-<section id="alloggi" class="py-32 bg-stone-50/50">
+<section id="alloggi" class="section-shell bg-stone-50/50">
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div >
@@ -216,36 +236,47 @@
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($rooms as $room)
+            @forelse($rooms as $room)
             <div class="group bg-white border border-stone-200/60 transition-all duration-500 hover:shadow-2xl flex flex-col h-full">
                 
-                {{-- Immagine con badge dinamico --}}
+                {{-- Immagine dinamica da storage --}}
                 <div class="aspect-[4/5] overflow-hidden relative bg-stone-100">
                     @php
-                        // Ottimizzazione slug per immagini (Stanza Scirocco -> scirocco.jpg)
-                        $imageSlug = Str::slug(str_replace(['Stanza', 'stanza'], '', $room->name));
+                        $roomImage = is_array($room->images ?? null) && count($room->images) > 0 ? $room->images[0] : null;
+                        $roomImagePath = ltrim((string) $roomImage, '/');
+                        $roomImageUrl = $roomImage
+                            ? (\Illuminate\Support\Str::startsWith($roomImagePath, 'images/') ? asset($roomImagePath) : asset('storage/' . $roomImagePath))
+                            : asset('images/logo_nero.png');
+                        $roomPrice = $room->price ?? $room->price_per_night;
+                        $roomDetailUrl = filled($room->slug ?? null)
+                            ? route('alloggi.show', $room->slug)
+                            : route('stanza.show', $room->id);
                     @endphp
                     
-                    <img src="{{ asset('images/stanze/' . $imageSlug . '.jpg') }}" 
-                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                         alt="{{ $room->name }}">
+                    <a href="{{ $roomDetailUrl }}" class="block h-full w-full">
+                        <img src="{{ $roomImageUrl }}"
+                             class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                             alt="{{ $room->name }}">
+                    </a>
                     
                     <div class="absolute top-0 left-0 w-full h-full bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
 
                     <div class="absolute bottom-6 left-0 w-full px-6 flex justify-between items-center translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                         <span class="bg-white/95 backdrop-blur-sm px-3 py-1.5 text-[9px] font-bold tracking-widest uppercase text-stone-900 shadow-xl">
-                            Da €{{ number_format($room->price_per_night, 0, ',', '.') }}
+                            Da €{{ number_format((float) $roomPrice, 0, ',', '.') }}
                         </span>
                     </div>
                 </div>
 
                 {{-- Contenuto Descrittivo --}}
                 <div class="p-8 flex-grow flex flex-col text-center">
-                    <h4 class="text-lg font-serif uppercase tracking-wider text-stone-800 mb-2">{{ $room->name }}</h4>
+                    <h4 class="text-lg font-serif uppercase tracking-wider text-stone-800 mb-2">
+                        <a href="{{ $roomDetailUrl }}">{{ $room->name }}</a>
+                    </h4>
                     <p class="text-stone-400 text-[10px] uppercase tracking-[0.2em] mb-8 font-medium">Comfort & Tradizione</p>
                     
                     <div class="mt-auto">
-                        <a href="{{ url('/alloggi/' . $room->slug) }}" class="tuo-stile-bottone">
+                        <a href="{{ $roomDetailUrl }}" class="tuo-stile-bottone">
                         <button class="w-full bg-stone-900 text-white py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-amber-800 transition-all duration-300">
                             Verifica Disponibilità
                         </button>
@@ -254,7 +285,42 @@
                 </div>
             </div>
             
-            @endforeach
+            @empty
+            <div class="col-span-full text-center py-12 bg-white border border-stone-200/60">
+                <p class="text-stone-500 uppercase tracking-[0.2em] text-[10px]">Alloggi in aggiornamento</p>
+            </div>
+            @endforelse
+        </div>
+    </div>
+</section>
+
+<!-- SEZIONE GALLERIA -->
+<section id="galleria" class="section-shell bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="mb-12">
+            <span class="text-amber-700 uppercase tracking-[0.4em] text-[10px] font-bold block mb-4">Atmosfera</span>
+            <h2 class="text-4xl font-serif italic text-stone-800">Galleria</h2>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @forelse($galleries as $gallery)
+                @php
+                    $galleryImageUrl = filled($gallery->image_path)
+                        ? asset('storage/' . ltrim($gallery->image_path, '/'))
+                        : asset('images/logo_nero.png');
+                @endphp
+                <div class="overflow-hidden bg-stone-100">
+                    <img
+                        src="{{ $galleryImageUrl }}"
+                        alt="{{ $gallery->title ?? 'Galleria Cà Scirocco' }}"
+                        class="w-full h-56 object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    >
+                </div>
+            @empty
+                <div class="col-span-full text-center py-12 border border-stone-200">
+                    <p class="text-stone-500 uppercase tracking-[0.2em] text-[10px]">Galleria in aggiornamento</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -280,7 +346,7 @@
 
 
 <!-- SEZIONE STAFF -->
-<section id="staff" class="py-10 bg-white"> <!-- py ridotto da 24/32 a 10 -->
+<section id="staff" class="section-shell bg-white">
     <div class="max-w-5xl mx-auto px-6">
         <span class="text-amber-700 uppercase tracking-[0.5em] text-[10px] font-bold block mb-4">L'anima di Cà Scirocco</span>
         <h2 class="text-5xl font-serif italic text-stone-800 mb-8">Il Nostro Staff</h2>
@@ -388,11 +454,11 @@
 </section>
 
 <!-- SEZIONE SOCIAL & FOOTER INTEGRATA -->
-<footer class="bg-stone-950 text-white pt-32 pb-12">
+<footer class="bg-stone-950 text-white pt-20 pb-10">
     <div class="max-w-7xl mx-auto px-4">
         
         <!-- Parte Superiore: Social Network -->
-        <div class="flex flex-col items-center mb-24">
+        <div class="flex flex-col items-center mb-16">
             <span class="text-amber-700 uppercase tracking-[0.5em] text-[10px] font-bold block mb-4">Rimani Connesso</span>
             <h2 class="text-5xl font-serif italic text-white mb-16 text-center">Social Network</h2>
 
@@ -432,7 +498,7 @@
         </div>
 
         <!-- Parte Inferiore: Legal & Credits -->
-        <div class="mt-20 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] uppercase tracking-[0.3em] text-stone-600">
+        <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.3em] text-stone-600">
             <div class="flex gap-10">
                 <!-- TASTI CHE APRONO L'OVERLAY -->
                 <button @click="legalModal = 'privacy'" class="hover:text-amber-700 transition">Privacy Policy</button>
@@ -519,40 +585,6 @@
         <div class="flex gap-3">
             <button @click="accept()" class="flex-1 bg-white text-stone-950 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 hover:text-white transition-all">Accetto</button>
             <button @click="legalModal = 'cookies'" class="flex-1 border border-stone-700 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-all">Dettagli</button>
-        </div>
-    </div>
-</div>
-
-
-<!-- 2. BANNER COOKIE / POP-UP LEGALE (Da mettere a fondo pagina) -->
-<div x-data="{ 
-        cookieBanner: !localStorage.getItem('cookieAccepted'),
-        accept() {
-            localStorage.setItem('cookieAccepted', 'true');
-            this.cookieBanner = false;
-        }
-     }" 
-     x-show="cookieBanner"
-     x-transition:enter="transition ease-out duration-500"
-     x-transition:enter-start="translate-y-full opacity-0"
-     x-transition:enter-end="translate-y-0 opacity-100"
-     class="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:max-w-md bg-stone-900 text-white z-[100] p-6 shadow-2xl border border-stone-800 rounded-lg">
-    
-    <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold uppercase tracking-widest text-amber-600">Informativa sui Cookie</h3>
-        <p class="text-[10px] uppercase tracking-widest leading-relaxed text-stone-400">
-            Per offrirti la migliore esperienza possibile, Cà Scirocco utilizza i cookie. 
-            Puoi consultare la nostra <a href="{{ route('privacy') }}" class="underline hover:text-white">Privacy Policy</a> per maggiori info.
-        </p>
-        <div class="flex gap-3 mt-2">
-            <button @click="accept()" 
-                    class="flex-1 bg-white text-stone-950 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-600 hover:text-white transition-all">
-                Accetto tutto
-            </button>
-            <a href="{{ route('cookies') }}" 
-               class="flex-1 border border-stone-700 text-center py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-800 transition-all">
-                Dettagli
-            </a>
         </div>
     </div>
 </div>

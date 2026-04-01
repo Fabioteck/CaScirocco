@@ -18,8 +18,8 @@ class TableBookingResource extends Resource
     protected static ?string $model = TableBooking::class;
     protected static ?string $navigationLabel = 'Prenotazione tavoli';
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = null;
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $navigationGroup = 'MENU';
 
     protected static bool $shouldRegisterNavigation = true;
 

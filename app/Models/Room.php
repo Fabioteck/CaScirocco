@@ -13,10 +13,15 @@ class Room extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'capacity',
         'price_per_night',
         'images', // Se usi il campo JSON direttamente nella tabella rooms
         'description',
+        'size_sqm',
+        'bed_type',
+        'bathroom_type',
+        'amenities',
     ];
 
     /**
@@ -26,6 +31,7 @@ class Room extends Model
     protected $casts = [
         'images' => 'array',
         'price_per_night' => 'decimal:2',
+        'amenities' => 'array',
     ];
 
     /**

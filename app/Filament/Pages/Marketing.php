@@ -7,10 +7,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Marketing extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-qr-code';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
     protected static ?string $navigationLabel = 'Marketing & QR';
 
-    protected static ?string $navigationGroup = 'GESTIONE SITO';
+    protected static ?string $navigationGroup = 'Sito';
 
     protected static ?int $navigationSort = 4;
 

@@ -16,8 +16,8 @@ class DishResource extends Resource
 
     protected static ?string $navigationLabel = 'Piatti';
     protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'ATTIVITA\'';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Ristorante';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 
     public static function form(Form $form): Form
     {

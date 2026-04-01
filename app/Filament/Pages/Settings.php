@@ -19,7 +19,7 @@ class Settings extends Page
 
     protected static ?string $navigationLabel = 'Settaggi';
 
-    protected static ?string $navigationGroup = 'GESTIONE SITO';
+    protected static ?string $navigationGroup = 'Sito';
 
     protected static ?int $navigationSort = 3;
 

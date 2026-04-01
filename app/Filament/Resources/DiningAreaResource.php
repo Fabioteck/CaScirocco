@@ -19,7 +19,8 @@ class DiningAreaResource extends Resource
     protected static ?string $navigationLabel = 'Gestione sale';
     protected static ?int $navigationSort = 4;
     protected static ?string $slug = 'dining-areas';
-    protected static ?string $navigationGroup = 'ATTIVITA\'';
+    protected static ?string $navigationGroup = 'Ristorante';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static bool $shouldRegisterNavigation = true; 
 
     public static function getRelations(): array

@@ -21,7 +21,8 @@ class DailyDishResource extends Resource
     protected static ?string $model = DailyDish::class;
     protected static ?string $navigationLabel = 'Menu del giorno';
     protected static ?int $navigationSort = 3;
-    protected static ?string $navigationGroup = 'ATTIVITA\'';
+    protected static ?string $navigationGroup = 'Ristorante';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static bool $shouldRegisterNavigation = true;
     protected static ?string $slug = 'daily-dishes';
 

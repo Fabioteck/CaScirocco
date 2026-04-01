@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
+    protected $fillable = [
+        'category_id',
+        'image_path',
+        'title',
+        'sort_order',
+    ];
+
     public function category() {
     return $this->belongsTo(Category::class);
 }
