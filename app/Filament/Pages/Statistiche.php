@@ -13,6 +13,6 @@ class Statistiche extends Page
 
     protected static ?string $navigationLabel = 'Statistiche';
 
-    protected static ?string $navigationGroup = 'MENU';
+     protected static ?string $navigationGroup = 'Amministrazione';
     protected static string $view = 'filament.pages.statistiche';
 }

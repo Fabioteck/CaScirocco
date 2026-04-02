@@ -16,31 +16,22 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class DiningAreaResource extends Resource
 {
     protected static ?string $model = DiningArea::class;
-    protected static ?string $navigationLabel = 'Gestione sale';
-    protected static ?int $navigationSort = 4;
-    protected static ?string $slug = 'dining-areas';
+
     protected static ?string $navigationGroup = 'Ristorante';
-    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
-    protected static bool $shouldRegisterNavigation = true; 
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static ?int $navigationSort = 5;
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+    protected static ?string $navigationLabel = 'Gestione sale';
 
-        public static function form(Form $form): Form
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Dettagli Sala')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Nome della Sala')
-                            ->required()
-                            ->placeholder('es. Sala Camino Nord'),
-                    ])
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('description'),
+                Forms\Components\TextInput::make('capacity')
+                    ->numeric()
+                    ->required(),
             ]);
     }
 
@@ -48,22 +39,20 @@ class DiningAreaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nome Sala')
-                    ->sortable()
-                    ->searchable(),
-                
-                // Conteggio dei tavoli associati per ogni sala
-                Tables\Columns\TextColumn::make('tables_count')
-                    ->label('Tavoli Totali')
-                    ->counts('tables')
-                    ->badge()
-                    ->color('info'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('capacity'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->filters([
+                //
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array

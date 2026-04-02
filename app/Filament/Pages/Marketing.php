@@ -10,7 +10,7 @@ class Marketing extends Page
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
     protected static ?string $navigationLabel = 'Marketing & QR';
 
-    protected static ?string $navigationGroup = 'Sito';
+    protected static ?string $navigationGroup = 'Ristorante';
 
     protected static ?int $navigationSort = 4;
 

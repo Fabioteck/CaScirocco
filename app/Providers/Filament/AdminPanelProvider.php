@@ -64,25 +64,25 @@ class AdminPanelProvider extends PanelProvider
                     ->url('https://www.facebook.com', true)
                     ->icon('heroicon-o-share')
                     ->group('Sito')
-                    ->sort(1),
+                    ->sort(3),
 
                 NavigationItem::make('Instagram')
                     ->url('https://www.instagram.com', true)
                     ->icon('heroicon-o-camera')
                     ->group('Sito')
-                    ->sort(2),
+                    ->sort(4),
 
                 NavigationItem::make('TripAdvisor')
                     ->url('https://www.tripadvisor.it', true)
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->group('Sito')
-                    ->sort(3),
+                    ->sort(5),
 
                 NavigationItem::make('Booking')
                     ->url('https://www.booking.com', true)
                     ->icon('heroicon-o-building-office-2')
                     ->group('Sito')
-                    ->sort(4),
+                    ->sort(6),
             ])
 
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

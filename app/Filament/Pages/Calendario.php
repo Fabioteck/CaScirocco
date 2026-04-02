@@ -12,7 +12,7 @@ class Calendario extends Page
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = 'MENU';
+     protected static ?string $navigationGroup = 'Amministrazione';
 
     protected static string $view = 'filament.pages.calendario';
 }

@@ -5,9 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GalleryResource\Pages;
 use App\Filament\Resources\GalleryResource\RelationManagers;
 use App\Models\Gallery;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,74 +17,40 @@ class GalleryResource extends Resource
 {
     protected static ?string $model = Gallery::class;
 
-    protected static ?string $navigationLabel = 'Gallerie';
-    protected static ?int $navigationSort = 1;
     protected static ?string $navigationGroup = 'Sito';
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static ?int $navigationSort = 1;
 
-public static function form(Form $form): Form
-{
-    return $form
-        ->schema([
-            // Seleziona la categoria (Relazione)
-            Select::make('category_id')
-                ->relationship('category', 'name')
-                ->required()
-                ->searchable()
-                ->preload(),
+    protected static ?string $navigationLabel = 'Gallerie';
 
-            // Il cuore dell'upload
-            FileUpload::make('image_path')
-                ->label('Carica Immagine')
-                ->image()
-                ->disk('public')
-                ->directory('galleries')
-                ->visibility('public')
-                ->imageResizeTargetWidth('1200') // Fondamentale per le performance del Pi 4
-                ->imageResizeTargetHeight('800')
-                ->loadingIndicatorPosition('left')
-                ->panelLayout('integrated')
-                ->required(),
-
-            TextInput::make('title')
-                ->label('Titolo (opzionale)')
-                ->maxLength(255),
-
-            TextInput::make('sort_order')
-                ->label('Ordine')
-                ->numeric()
-                ->default(0)
-                ->required(),
-        ]);
-}
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('title')->required(),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->required(),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->required(),
+                Forms\Components\TextInput::make('sort_order')
+                    ->numeric()
+                    ->default(0),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')
-                    ->disk('public')
-                    ->label('Foto')
-                    ->square(),
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Titolo')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Categoria'),
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->label('Ordine')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('title')->searchable(),
+                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('sort_order'),
             ])
             ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->relationship('category', 'name'),
             ]);
     }
 

@@ -10,7 +10,7 @@ class Dashboard extends BaseDashboard
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = 'MENU';
+    protected static ?string $navigationGroup = 'Amministrazione';
 
     /**
      * Widget visibili in Dashboard:

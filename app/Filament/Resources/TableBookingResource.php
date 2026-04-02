@@ -3,93 +3,44 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TableBookingResource\Pages;
+use App\Filament\Resources\TableBookingResource\RelationManagers;
 use App\Models\TableBooking;
-use App\Models\DiningArea;
-use App\Models\Table as RestaurantTable;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TableBookingResource extends Resource
 {
     protected static ?string $model = TableBooking::class;
-    protected static ?string $navigationLabel = 'Prenotazione tavoli';
-    protected static ?int $navigationSort = 3;
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-    protected static ?string $navigationGroup = 'MENU';
 
-    protected static bool $shouldRegisterNavigation = true;
+    protected static ?string $navigationGroup = 'Amministrazione';
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationLabel = 'Prenotazione tavoli';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Dati Cliente')
-                    ->schema([
-                        Forms\Components\TextInput::make('customer_name')
-                            ->label('Nome Cliente')
-                            ->required()
-                            ->placeholder('es. Mario Rossi'),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Telefono/Contatto')
-                            ->tel(),
-                    ])->columns(2),
-
-                Forms\Components\Section::make('Dettagli Tavolo')
-                    ->schema([
-                        Forms\Components\TextInput::make('pax')
-                            ->label('Persone')
-                            ->numeric()
-                            ->default(2)
-                            ->required()
-                            ->reactive(), 
-
-                        Forms\Components\DateTimePicker::make('reservation_time')
-                            ->label('Data e Ora')
-                            ->default(Carbon::now()->setHour(20)->setMinute(0))
-                            ->required(),
-
-                        // Filtro per Sala (Polesine Style)
-                        Forms\Components\Select::make('dining_area_id')
-                            ->label('Sala (Camino o Centrale)')
-                            ->options(DiningArea::pluck('name', 'id'))
-                            ->reactive()
-                            ->afterStateUpdated(fn (callable $set) => $set('table_id', null)),
-
-                        // Mostra solo i tavoli adatti
-                        Forms\Components\Select::make('table_id')
-                            ->label('Assegna Tavolo')
-                            ->placeholder('Scegli tavolo...')
-                            ->options(function (callable $get) {
-                                $areaId = $get('dining_area_id');
-                                $pax = $get('pax');
-                                
-                                if (!$areaId) return [];
-
-                                return RestaurantTable::where('dining_area_id', $areaId)
-                                    ->where('max_capacity', '>=', $pax)
-                                    ->where('is_active', true)
-                                    ->pluck('table_number', 'id');
-                            })
-                            ->required(),
-                    ])->columns(2),
-
-                Forms\Components\Select::make('status')
-                    ->label('Stato')
-                    ->options([
-                        'confirmed' => 'Confermata',
-                        'pending' => 'In Attesa',
-                        'cancelled' => 'Annullata',
-                    ])
-                    ->default('confirmed')
+                Forms\Components\Select::make('table_id')
+                    ->relationship('table', 'name')
                     ->required(),
-
-                Forms\Components\Textarea::make('notes')
-                    ->label('Note (Allergie, Camino, ecc.)')
-                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('customer_name')->required(),
+                Forms\Components\TextInput::make('customer_email')->email()->required(),
+                Forms\Components\DateTimePicker::make('booking_time')
+                    ->required()
+                    ->native(false),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'In Attesa',
+                        'confirmed' => 'Confermata',
+                        'cancelled' => 'Annullata',
+                    ])->default('pending')->required(),
             ]);
     }
 
@@ -97,54 +48,27 @@ class TableBookingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('reservation_time')
-                    ->label('Data e Ora')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable(),
-                
-                Tables\Columns\TextColumn::make('customer_name')
-                    ->label('Cliente')
-                    ->searchable(),
-                
-                Tables\Columns\TextColumn::make('pax')
-                    ->label('Persone')
-                    ->alignCenter(),
-
-                Tables\Columns\TextColumn::make('table.table_number')
-                    ->label('Tavolo')
-                    ->badge()
-                    ->color('warning'),
-
-                Tables\Columns\SelectColumn::make('status')
-                    ->label('Stato')
-                    ->options([
-                        'confirmed' => 'Confermata',
-                        'pending' => 'In Attesa',
-                        'cancelled' => 'Annullata',
+                Tables\Columns\TextColumn::make('customer_name')->searchable(),
+                Tables\Columns\TextColumn::make('table.name'),
+                Tables\Columns\TextColumn::make('booking_time')->dateTime('d/m/Y H:i')->sortable(),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'confirmed',
+                        'danger' => 'cancelled',
                     ]),
             ])
-            ->defaultSort('reservation_time', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'confirmed' => 'Confermata',
-                        'pending' => 'In Attesa',
-                        'cancelled' => 'Annullata',
-                    ]),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    ->options(['pending' => 'In Attesa', 'confirmed' => 'Confermate']),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array

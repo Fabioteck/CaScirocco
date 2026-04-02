@@ -12,7 +12,7 @@ class Sos extends Page
 
     protected static ?int $navigationSort = 6;
 
-    protected static ?string $navigationGroup = 'MENU'; 
+    protected static ?string $navigationGroup = 'Amministrazione';
 
     protected static string $view = 'filament.pages.sos';
 }

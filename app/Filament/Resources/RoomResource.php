@@ -3,54 +3,41 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomResource\Pages;
+use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
-    protected static ?string $navigationLabel = 'Gestione stanze';
-    protected static ?int $navigationSort = 6;
-    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+
     protected static ?string $navigationGroup = 'Ristorante';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationLabel = 'Gestione stanze';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Dettagli Stanza')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->label('Nome Stanza'),
-                        
-                        Forms\Components\TextInput::make('capacity')
-                            ->numeric()
-                            ->required()
-                            ->label('Posti Letto')
-                            ->prefixIcon('heroicon-o-users'),
-
-                        Forms\Components\TextInput::make('price_per_night')
-                            ->numeric()
-                            ->prefix('€')
-                            ->label('Prezzo per Notte')
-                            ->required(),
-                    ])->columns(3),
-
-                    Forms\Components\Section::make('Descrizione')
-                    ->schema([
-                        Forms\Components\RichEditor::make('description')
-                            ->label('Descrizione Stanza')
-                            ->columnSpanFull(),
-                    ]),
-
-                Forms\Components\Section::make('Galleria Immagini')
-                    ->description('Trascina qui fino a 10 foto.')
-                    ->schema([])
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('description'),
+                Forms\Components\TextInput::make('capacity')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\TextInput::make('price_per_night')
+                    ->numeric()
+                    ->required(),
+                Forms\Components\FileUpload::make('images')
+                    ->multiple()
+                    ->image(),
             ]);
     }
 
@@ -58,13 +45,20 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nome')->sortable(),
-                Tables\Columns\TextColumn::make('capacity')->label('Posti')->sortable(),
-                Tables\Columns\TextColumn::make('price_per_night')->label('Prezzo')->money('EUR'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('capacity'),
+                Tables\Columns\TextColumn::make('price_per_night'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->filters([
+                //
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
