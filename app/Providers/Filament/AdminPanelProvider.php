@@ -33,8 +33,11 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             
-            // --- DISABILITIAMO IL LOGIN ---
-            // ->login()  <-- Commentato: niente più form di login
+            ->favicon(asset('images/logo_nero.png')) 
+            
+            
+             ->login() 
+             
 
             ->sidebarWidth('18rem')
             
@@ -61,25 +64,25 @@ class AdminPanelProvider extends PanelProvider
 
             ->navigationItems([
                 NavigationItem::make('Facebook')
-                    ->url('https://www.facebook.com', true)
+                    ->url('https://www.facebook.com/www.cascirocco.it', true)
                     ->icon('heroicon-o-share')
                     ->group('Sito')
                     ->sort(3),
 
                 NavigationItem::make('Instagram')
-                    ->url('https://www.instagram.com', true)
+                    ->url('https://www.instagram.com/ristorantealloggiocascirocco/', true)
                     ->icon('heroicon-o-camera')
                     ->group('Sito')
                     ->sort(4),
 
                 NavigationItem::make('TripAdvisor')
-                    ->url('https://www.tripadvisor.it', true)
+                    ->url('https://www.tripadvisor.it/Restaurant_Review-g230072-d3642589-Reviews-Ristorante_Alloggio_Ca_Scirocco-Rovigo_Province_of_Rovigo_Veneto.html?m=69573', true)
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->group('Sito')
                     ->sort(5),
 
                 NavigationItem::make('Booking')
-                    ->url('https://www.booking.com', true)
+                    ->url('https://www.booking.com/Share-UYDx40', true)
                     ->icon('heroicon-o-building-office-2')
                     ->group('Sito')
                     ->sort(6),
@@ -90,7 +93,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([\App\Filament\Pages\Dashboard::class])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             
-            ->middleware([
+                        ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -101,13 +104,15 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            // --- DISABILITIAMO IL MIDDLEWARE DI AUTENTICAZIONE ---
-            ->authMiddleware([]) // Lasciamo vuoto per rendere tutto pubblico
+            ->authMiddleware([
+                \Filament\Http\Middleware\Authenticate::class,
+            ]) 
             ->widgets([
-                \Filament\Widgets\AccountWidget::class, // Percorso corretto per il widget di Filament
-                \App\Filament\Widgets\WeatherWidget::class,
-                \App\Filament\Widgets\TablesTomorrowWidget::class,
-                \App\Filament\Widgets\RoomArrivalsTomorrowWidget::class,
+
+                \Filament\Widgets\AccountWidget::class, 
+             //   \App\Filament\Widgets\WeatherWidget::class,
+            //  \App\Filament\Widgets\TablesTomorrowWidget::class,
+               // \App\Filament\Widgets\RoomArrivalsTomorrowWidget::class,
             ])
 
             ->plugins([

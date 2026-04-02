@@ -52,7 +52,8 @@ class User extends Authenticatable implements FilamentUser
         public function canAccessPanel(Panel $panel): bool
         {
             // Chiunque arrivi qui dentro è il benvenuto
-            return str_ends_with($this->email, '@soundsystemculture.social');
+            //return str_ends_with($this->email, '@cascirocco.it');
+            return true; 
         }
 
 }
