@@ -31,7 +31,7 @@ class GalleryResource extends Resource
                 Forms\Components\Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required(),
-                Forms\Components\FileUpload::make('image')
+                Forms\Components\FileUpload::make('image_path')
                     ->image()
                     ->required(),
                 Forms\Components\TextInput::make('sort_order')

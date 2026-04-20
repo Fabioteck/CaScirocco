@@ -110,6 +110,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
 
                 \Filament\Widgets\AccountWidget::class, 
+                \App\Filament\Widgets\EmailOverview::class,
              //   \App\Filament\Widgets\WeatherWidget::class,
             //  \App\Filament\Widgets\TablesTomorrowWidget::class,
                // \App\Filament\Widgets\RoomArrivalsTomorrowWidget::class,

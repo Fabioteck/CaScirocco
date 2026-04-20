@@ -20,6 +20,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Widgets\StatsOverview::class,
+            \App\Filament\Widgets\EmailOverview::class, 
         ];
     }
 

@@ -1,0 +1,118 @@
+
+        /* Supporto per Alpine (già incluso in Livewire 3/Filament) */
+        [x-cloak] { display: none !important; }
+        :root { --nav-h: 72px; }
+        .section-shell { padding-block: clamp(2.25rem, 5vw, 4rem); }
+        @media (min-width: 1024px) {
+            .section-shell { padding-block: clamp(2.75rem, 4vw, 4.25rem); }
+        }
+        /* Ancora/scroll più preciso con navbar fissa */
+        section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+        .prose-legal h2 {
+            font-family: 'Playfair Display', serif; /* O il tuo font serif principale */
+            color: #1c1917; /* stone-900 */
+            border-bottom: 1px solid #e7e5e4; /* stone-200 */
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .prose-legal p, .prose-legal ul {
+            color: #44403c; /* stone-700 */
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .prose-legal strong {
+            color: #78350f; /* amber-900 */
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+        .social-icon-wrapper {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .social-icon-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .cookie-banner-custom {
+            border-top: 3px solid #b45309; /* amber-700 */
+            backdrop-filter: blur(10px);
+        }
+
+                /* Stile Link Legali Footer */
+        .footer-legal-link {
+            font-size: 11px; /* Leggermente più grande per leggibilità */
+            letter-spacing: 0.25em; /* Più spazio per un look pulito */
+            text-transform: uppercase;
+            color: #57534e; /* stone-600 */
+            transition: all 0.4s ease;
+            position: relative;
+            padding-bottom: 2px;
+        }
+
+        .footer-legal-link:hover {
+            color: #b45309; /* amber-700 */
+        }
+
+        /* Sottile linea decorativa sotto il link al passaggio del mouse */
+        .footer-legal-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #b45309;
+            transition: width 0.4s ease;
+        }
+
+        .footer-legal-link:hover::after {
+            width: 100%;
+        }
+
+                .legal-content h2 {
+        font-family: 'Playfair Display', serif; /* Il tuo font elegante */
+        font-style: italic;
+        color: #1c1917; /* stone-900 */
+        border-bottom: 1px solid #e7e5e4; /* stone-200 */
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+        font-size: 2.25rem;
+        }
+
+        .legal-content h4 {
+            color: #b45309; /* amber-700 */
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            font-weight: 800;
+            margin-top: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .legal-content p {
+            color: #57534e; /* stone-600 */
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 1.25rem;
+        }
+
+        .legal-content ul li {
+            color: #57534e;
+            font-size: 13px;
+            margin-bottom: 0.75rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .legal-content ul li::before {
+            content: '—';
+            position: absolute;
+            left: -0.5rem;
+            color: #d6d3d1; /* stone-300 */
+        }
+
+

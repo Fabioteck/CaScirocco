@@ -18,23 +18,13 @@
     <!-- <script src="{{ asset('lib/tailwind/tailwind.js') }}"></script> -->
     <link rel="stylesheet" href="{{ asset('lib/fontawesome/css/all.min.css') }}?v=1.2">
     <link rel="stylesheet" href="{{ asset('css/app.min.css') }}?v={{ time() }}">
+    <!-- CSS Personalizzato Cà Scirocco -->
+    <link rel="stylesheet" href="{{ asset('css/scirocco.css') }}?v={{ time() }}">
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-
-    <style>
-        /* Supporto per Alpine (già incluso in Livewire 3/Filament) */
-        [x-cloak] { display: none !important; }
-        :root { --nav-h: 72px; }
-        .section-shell { padding-block: clamp(2.25rem, 5vw, 4rem); }
-        @media (min-width: 1024px) {
-            .section-shell { padding-block: clamp(2.75rem, 4vw, 4.25rem); }
-        }
-        /* Ancora/scroll più preciso con navbar fissa */
-        section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
-    </style>
 
 @livewireStyles
 </head>
@@ -313,7 +303,6 @@
                     <img
                         src="{{ $galleryImageUrl }}"
                         alt="{{ $gallery->title ?? 'Galleria Cà Scirocco' }}"
-                        class="w-full h-56 object-cover grayscale hover:grayscale-0 transition-all duration-500"
                     >
                 </div>
             @empty
@@ -454,33 +443,36 @@
 </section>
 
 <!-- SEZIONE SOCIAL & FOOTER INTEGRATA -->
-<footer class="bg-stone-950 text-white pt-20 pb-10">
+<<!-- FOOTER CON UNICO CERVELLO ALPINE.JS -->
+<footer x-data="{ 
+    legalModal: null, 
+    cookieConsent: localStorage.getItem('cookie_consent') === null 
+}" class="bg-stone-950 text-white pt-20 pb-10">
+    
     <div class="max-w-7xl mx-auto px-4">
-        
-        <!-- Parte Superiore: Social Network -->
+        <!-- Social Network -->
         <div class="flex flex-col items-center mb-16">
             <span class="text-amber-700 uppercase tracking-[0.5em] text-[10px] font-bold block mb-4">Rimani Connesso</span>
             <h2 class="text-5xl font-serif italic text-white mb-16 text-center">Social Network</h2>
-
             <div class="flex flex-wrap justify-center gap-8 md:gap-12">
-                <!-- Facebook -->
-                <a href="https://www.facebook.com" target="_blank" class="group flex flex-col items-center gap-4">
+                  <!-- Facebook -->
+                <a href="https://www.facebook.com/www.cascirocco.it" target="_blank" class="group flex flex-col items-center gap-4">
                     <div class="w-14 h-14 flex items-center justify-center bg-stone-900 border border-stone-800 rounded-full group-hover:bg-white transition-all duration-500 shadow-xl">
                         <svg class="w-6 h-6 fill-stone-500 group-hover:fill-stone-950 transition-colors duration-500" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3l-.5 3h-2.5v6.8c4.56-.93 8-4.96 8-9.8z""")/>></svg>
                     </div>
                     <span class="text-[9px] uppercase tracking-[0.3em] text-stone-500 group-hover:text-white transition-all duration-500">Facebook</span>
                 </a>
 
-                <!-- WhatsApp -->
+                <!-- WhatsApp
                 <a href="https://wa.me" target="_blank" class="group flex flex-col items-center gap-4">
                     <div class="w-14 h-14 flex items-center justify-center bg-stone-900 border border-stone-800 rounded-full group-hover:bg-[#25D366] transition-all duration-500 shadow-xl">
                         <svg class="w-6 h-6 fill-stone-500 group-hover:fill-white transition-colors duration-500" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412 0 6.556-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.223-3.673l.339.202c1.457.867 3.132 1.324 4.842 1.325h.005c5.648 0 10.243-4.595 10.243-10.242 0-2.737-1.066-5.31-3.003-7.248-1.937-1.938-4.51-3.002-7.246-3.002-5.648 0-10.243 4.596-10.243 10.243 0 2.042.607 4.02 1.754 5.697l.222.327-.999 3.647 3.733-.979z""")/>></svg>
                     </div>
                     <span class="text-[9px] uppercase tracking-[0.3em] text-stone-500 group-hover:text-white transition-all duration-500">WhatsApp</span>
-                </a>
+                </a> -->
 
                 <!-- Instagram -->
-                <a href="https://www.instagram.com" target="_blank" class="group flex flex-col items-center gap-4">
+                <a href="https://www.instagram.com/ristorantealloggiocascirocco/" target="_blank" class="group flex flex-col items-center gap-4">
                     <div class="w-14 h-14 flex items-center justify-center bg-stone-900 border border-stone-800 rounded-full group-hover:bg-white transition-all duration-500 shadow-xl">
                         <svg class="w-6 h-6 fill-stone-500 group-hover:fill-stone-950 transition-colors duration-500" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z""")/>></svg>
                     </div>
@@ -488,77 +480,140 @@
                 </a>
 
                 <!-- TripAdvisor -->
-                <a href="https://www.tripadvisor.it" target="_blank" class="group flex flex-col items-center gap-4">
+                <a href="https://www.tripadvisor.it/Restaurant_Review-g230072-d3642589-Reviews-Ristorante_Alloggio_Ca_Scirocco-Rovigo_Province_of_Rovigo_Veneto.html?m=69573" target="_blank" class="group flex flex-col items-center gap-4">
                     <div class="w-14 h-14 flex items-center justify-center bg-stone-900 border border-stone-800 rounded-full group-hover:bg-[#00af87] transition-all duration-500 shadow-xl">
                         <svg class="w-6 h-6 fill-stone-500 group-hover:fill-white transition-colors duration-500" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5.5-9c.83 0 1.5.67 1.5 1.5S7.33 14 6.5 14 5 13.33 5 12.5 5.67 11 6.5 11zm11 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5z""")/>></svg>
                     </div>
                     <span class="text-[9px] uppercase tracking-[0.3em] text-stone-500 group-hover:text-white transition-all duration-500">TripAdvisor</span>
                 </a>
-            </div>
+
         </div>
 
-        <!-- Parte Inferiore: Legal & Credits -->
-        <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.3em] text-stone-600">
-            <div class="flex gap-10">
-                <!-- TASTI CHE APRONO L'OVERLAY -->
-                <button @click="legalModal = 'privacy'" class="hover:text-amber-700 transition">Privacy Policy</button>
-                <button @click="legalModal = 'cookies'" class="hover:text-amber-700 transition">Cookie Policy</button>
-                <button @click="legalModal = 'terms'" class="hover:text-amber-700 transition">Termini & Condizioni</button>
+        <!-- Legal & Credits -->
+        <div class="mt-12 pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+           <!-- Parte Inferiore: Link Legali Ottimizzati -->
+            <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-8">
+                <button @click="legalModal = 'privacy'" class="footer-legal-link">Privacy Policy</button>
+                <button @click="legalModal = 'cookies'" class="footer-legal-link">Cookie Policy</button>
+                <button @click="legalModal = 'terms'" class="footer-legal-link">Termini & Condizioni</button>
             </div>
-            <p class="text-center md:text-right">
-                &copy; {{ date('Y') }} Cà Scirocco — 
-                <a href="https://digitalone.it" target="_blank" class="text-stone-400 hover:text-amber-800 transition">Made with Passion</a>
-            </p>
+
+            <div class="text-center text-[10px] tracking-[0.2em] text-stone-500">
+                <p>© {{ date('Y') }} Cà Scirocco di Zanella Mirko — P.IVA 01492160294 — Via Volta Scirocco 3, 45011 - Adria (RO)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANNER COOKIE -->
+    <div x-show="cookieConsent" x-transition:enter="transition duration-500" x-transition:enter-start="translate-y-full"
+         class="fixed bottom-0 left-0 w-full z-[150] p-4 md:p-6" x-cloak>
+        <div class="max-w-4xl mx-auto bg-white shadow-2xl p-6 border flex flex-col md:flex-row items-center gap-6">
+            <div class="flex-1 text-stone-900"><h4 class="font-serif italic text-xl mb-1">Privacy & Cookie</h4>
+                <p class="text-stone-500 text-[10px] uppercase tracking-widest">Usiamo i cookie per offrirti il meglio. <button @click="legalModal = 'cookies'" class="underline">Dettagli</button></p>
+            </div>
+            <button @click="localStorage.setItem('cookie_consent', 'accepted'); cookieConsent = false" class="bg-stone-950 text-white px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-800 transition">Accetta Tutti</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY MODALE LEGALE -->
+    <div x-show="legalModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4" x-cloak>
+        <div x-show="legalModal" x-transition.opacity @click="legalModal = null" class="absolute inset-0 bg-stone-950/90 backdrop-blur-md"></div>
+        <div x-show="legalModal" x-transition:enter="transition duration-300 scale-95" class="relative bg-white w-full max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl p-8 md:p-16 rounded-sm text-stone-800">
+            <button @click="legalModal = null" class="absolute top-6 right-6 text-stone-400 text-3xl">&times;</button>
+            
+            <div x-show="legalModal === 'privacy'">
+                <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Privacy Policy</h2>
+                <p class="text-sm leading-relaxed mb-4"><strong>Titolare:</strong> Cà Scirocco di Zanella Mirko</p>
+                <p class="text-sm leading-relaxed">I dati raccolti (Nome, Email) servono solo per gestire le tue prenotazioni. Non cediamo dati a terzi.</p>
+            </div>
+            <div x-show="legalModal === 'cookies'">
+                <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Cookie Policy</h2>
+                <p class="text-sm leading-relaxed">Utilizziamo cookie tecnici per il funzionamento e cookie social per le mappe e i link Instagram/Facebook.</p>
+            </div>
+            <div x-show="legalModal === 'terms'">
+                <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Termini & Condizioni</h2>
+                <p class="text-sm leading-relaxed">Le prenotazioni sono soggette a disponibilità. In caso di ritardo, il tavolo è garantito per 20 minuti.</p>
+            </div>
         </div>
     </div>
 </footer>
 
+
+
+
 <!-- 1. OVERLAY LEGALE (MODAL UNICO) -->
 <div x-show="legalModal" 
      class="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
-     x-cloak>
+     x-cloak
+     @keydown.escape.window="legalModal = null">
+    
     <!-- Sfondo scuro sfocato -->
     <div x-show="legalModal" 
          x-transition.opacity
          @click="legalModal = null" 
-         class="absolute inset-0 bg-stone-950/80 backdrop-blur-sm"></div>
+         class="absolute inset-0 bg-stone-950/90 backdrop-blur-md"></div>
 
     <!-- Contenitore Bianco -->
     <div x-show="legalModal" 
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0 scale-95"
          x-transition:enter-end="opacity-100 scale-100"
-         class="relative bg-white w-full max-w-3xl max-h-[80vh] overflow-y-auto shadow-2xl p-8 md:p-16 rounded-sm">
+         class="relative bg-white w-full max-w-4xl max-h-[85vh] overflow-y-auto shadow-2xl p-8 md:p-16 rounded-sm text-stone-800">
         
-        <button @click="legalModal = null" class="absolute top-6 right-6 text-stone-400 hover:text-stone-900 transition text-2xl font-light">&times;</button>
+        <!-- Tasto Chiusura -->
+        <button @click="legalModal = null" class="absolute top-6 right-6 text-stone-400 hover:text-stone-900 transition text-3xl font-light">&times;</button>
 
-        <div class="prose prose-stone max-w-none">
+        <div class="relative bg-white w-full max-w-3xl max-h-[85vh] overflow-y-auto shadow-2xl p-8 md:p-16 rounded-sm border-t-4 border-amber-700 custom-scrollbar">
+            <!-- PRIVACY POLICY -->
             <template x-if="legalModal === 'privacy'">
-                <div>
-                    <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Privacy Policy</h2>
-                    <p class="text-stone-600 text-sm leading-relaxed mb-4">Informativa sul trattamento dei dati personali ai sensi del GDPR. Cà Scirocco tutela la tua privacy...</p>
-                    <!-- Inserisci qui il testo reale della privacy -->
+                <div data-aos="fade-in">
+                    <h2>Privacy Policy</h2>
+                    <h4>Titolare del Trattamento</h4>
+                    <p>Cà Scirocco di Zanella Mirko — Via Volta Scirocco 3, 45011 - Adria (RO). Email: info@cascirocco.it</p>
+                    
+                    <h4>Finalità dei Dati</h4>
+                    <p>I dati personali raccolti tramite i nostri moduli di contatto e prenotazione vengono utilizzati esclusivamente per la gestione delle richieste degli ospiti e per l'erogazione dei servizi di ristorazione e alloggio.</p>
+                    
+                    <h4>Sicurezza & Diritti</h4>
+                    <p>Adottiamo misure di sicurezza rigorose per prevenire la perdita o l'uso illecito dei dati. In conformità al GDPR, l'utente può richiedere in ogni momento l'accesso, la rettifica o la cancellazione dei propri dati personali.</p>
                 </div>
             </template>
 
+            <!-- COOKIE POLICY -->
             <template x-if="legalModal === 'cookies'">
-                <div>
-                    <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Cookie Policy</h2>
-                    <p class="text-stone-600 text-sm leading-relaxed">Utilizziamo cookie tecnici per garantirti la migliore esperienza di navigazione possibile nella nostra tenuta digitale.</p>
+                <div data-aos="fade-in">
+                    <h2>Cookie Policy</h2>
+                    <p>Utilizziamo strumenti digitali minimi per garantirti un'esperienza fluida e sicura sul nostro portale.</p>
+                    
+                    <h4>Cookie Tecnici</h4>
+                    <p>Essenziali per la navigazione, il salvataggio delle preferenze di lingua e il corretto funzionamento del sistema di prenotazione.</p>
+                    
+                    <h4>Sistemi di Terze Parti</h4>
+                    <p>Il sito potrebbe integrare contenuti di piattaforme esterne per arricchire l'esperienza informativa:</p>
+                    <ul>
+                        <li>Mappe interattive di Google Maps</li>
+                        <li>Widget e link di condivisione Instagram e Facebook</li>
+                        <li>Certificati di eccellenza TripAdvisor</li>
+                    </ul>
                 </div>
             </template>
 
+            <!-- TERMINI & CONDIZIONI -->
             <template x-if="legalModal === 'terms'">
-                <div>
-                    <h2 class="font-serif italic text-4xl mb-6 text-stone-900">Termini & Condizioni</h2>
-                    <p class="text-stone-600 text-sm leading-relaxed">Condizioni generali di soggiorno presso Cà Scirocco Adria.</p>
+                <div data-aos="fade-in">
+                    <h2>Termini & Condizioni</h2>
+                    <h4>Prenotazioni Ristorante</h4>
+                    <p>La prenotazione online è soggetta a conferma automatica o manuale da parte del nostro staff. Si prega di segnalare eventuali ritardi superiori ai 15 minuti.</p>
+                    
+                    <h4>Soggiorno negli Alloggi</h4>
+                    <p>Il check-in e il check-out seguono gli orari indicati nella mail di conferma. Eventuali cancellazioni devono pervenire entro i termini stabiliti per evitare penali.</p>
+                    
+                    <h4>Controversie</h4>
+                    <p>Per ogni controversia relativa all'uso del sito o alle prenotazioni, il foro competente è quello di Rovigo.</p>
                 </div>
             </template>
         </div>
 
-        <div class="mt-12 pt-8 border-t border-stone-100">
-            <button @click="legalModal = null" class="w-full bg-stone-950 text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-800 transition">Chiudi Informativa</button>
-        </div>
     </div>
 </div>
 
