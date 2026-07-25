@@ -13,7 +13,10 @@
 
    <body class="bg-stone-50"> 
    <!-- Navigazione -->
-    <nav class="fixed w-full z-50 transition-all duration-500 bg-white/95 backdrop-blur-md border-b border-stone-200/50 py-4 px-6 lg:px-12 flex justify-between items-center">
+    <nav class="fixed w-full z-50 transition-all duration-500 bg-white/100 backdrop-blur-lg shadow-md border-b border-stone-200 py-4 px-6 lg:px-12 flex justify-between items-center">
+    <div class="block lg:hidden fixed top-2 right-2 bg-red-600 text-white font-bold p-3 z-[9999] text-center rounded" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+        TEST HAMBURGER MOBILE
+    </div>
 
         <!-- Logo -->
         <div class="text-2xl md:text-3xl font-serif font-bold text-stone-800 tracking-tighter italic hover:text-amber-800 transition-colors cursor-pointer">
@@ -32,14 +35,14 @@
         <!-- Azioni e Hamburger -->
         <div class="flex items-center gap-4">
             <!-- Bottone Prenota (Nascosto su mobile molto piccolo) -->
-            <a href="#prenota-tavolo" class="hidden sm:block bg-stone-950 text-white px-6 py-2.5 text-[10px] uppercase tracking-widest font-bold hover:bg-amber-800 transition-all duration-300 shadow-md">
-                Prenota Tavolo
+            <a href="#prenota-tavolo" class="hidden sm:block bg-stone-950 text-white px-8 py-3 rounded-full text-xs font-medium uppercase tracking-wider hover:bg-stone-800 transition-colors duration-300 shadow-md">
+                PRENOTA
             </a>
 
             <!-- Hamburger Button (Vanilla JS - Zero conflitti) -->
-            <button onclick="toggleMenu()" class="lg:hidden text-stone-900 p-2 focus:outline-none hover:bg-stone-100 rounded-lg transition-colors">
-                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <button type="button" class="text-stone-950 hover:text-stone-700 focus:outline-none lg:hidden" id="mobile-menu-toggle" onclick="toggleMenu()">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
         </div>
@@ -116,7 +119,7 @@
                 </div>
                 <p class="text-center md:text-right">
                     &copy; {{ date('Y') }} Cà Scirocco — 
-                    <a href="https://digitalone.it" class="text-stone-400 hover:text-amber-800 transition">Made with Passion</a>
+                    <a href="#" class="text-stone-400 hover:text-amber-800 transition">Made with Passion</a>
                 </p>
             </div>
         </div>
